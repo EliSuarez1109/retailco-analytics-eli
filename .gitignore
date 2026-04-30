@@ -1,0 +1,9 @@
+# Exclusiones obligatorias por seguridad y limpieza
+profiles.yml
+target/
+dbt_packages/
+logs/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
