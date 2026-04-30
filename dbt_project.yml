@@ -16,10 +16,10 @@ models:
   retailco_analytics_eli:
     staging:
       +materialized: view
-      +schema: staging      # <-- Añadir esto
+      +schema: staging      
     intermediate:
       +materialized: table
-      +schema: intermediate # <-- Añadir esto
+      +schema: intermediate 
     marts:
       +materialized: table
       +schema: marts
