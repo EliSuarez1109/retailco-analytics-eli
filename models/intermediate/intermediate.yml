@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: int_customer_enriched
+    description: >
+      Dimensión de clientes desnormalizada y enriquecida. 
+      
+      **Justificación de Arquitectura:**
+      En el modelo transaccional TPC-DS, la demografía del cliente y del hogar se modelan como dimensiones separadas mediante claves 
+      subrogadas (cdemo_sk, hdemo_sk) para ahorrar espacio en almacenamiento basado en filas. 
+      Sin embargo, en un Data Warehouse analítico columnar como Snowflake, los JOINs son operaciones costosas, 
+      mientras que las tablas anchas son procesadas de manera extremadamente eficiente. 
+      
+      Por lo tanto, en este modelo intermediate hemos resuelto el problema aplicando una desnormalización, unimos las tablas de 
+      demografía y direcciones directamente al cliente. 
+      Esto simplifica drásticamente el modelo semántico para el analisis de negocio en Power BI, 
+      ya no tendremos que hacer cruces complejos para filtrar ventas por género o estado civil.
