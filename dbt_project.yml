@@ -1,4 +1,4 @@
-name: 'proyecto_dbt'
+name: 'retailco_analytics_eli'
 version: '1.0'
 config-version: 2
 
@@ -13,10 +13,13 @@ clean-targets:
   - "dbt_packages"
 
 models:
-  proyecto_dbt:
+  retailco_analytics_eli:
     staging:
       +materialized: view
+      +schema: staging      # <-- Añadir esto
     intermediate:
       +materialized: table
+      +schema: intermediate # <-- Añadir esto
     marts:
       +materialized: table
+      +schema: marts

@@ -7,3 +7,4 @@ logs/
 # Archivos del sistema operativo
 .DS_Store
 Thumbs.db
+dbt_internal_packages/
