@@ -10,10 +10,10 @@
         - threshold_pct (float): Porcentaje de tolerancia para considerar la tendencia "Estable" (Por defecto 0.05 = 5%).
 
     Ejemplo de uso:
-        SELECT {{ classify_trend('avg_weekly_stock', 'prev_week_stock', 0.05) }} AS inventory_trend
+        SELECT {{ clasificacion_tendencia('avg_weekly_stock', 'prev_week_stock', 0.05) }} AS inventory_trend
 #}
 
-{% macro classify_trend(current_val, previous_val, threshold_pct=0.05) %}
+{% macro clasificacion_tendencia(current_val, previous_val, threshold_pct=0.05) %}
     CASE 
         WHEN {{ previous_val }} IS NULL THEN 'Sin historial'
         WHEN {{ current_val }} > {{ previous_val }} * (1 + {{ threshold_pct }}) THEN 'Creciente'

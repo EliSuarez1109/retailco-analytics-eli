@@ -1,7 +1,7 @@
 version: 2
 
 macros:
-  - name: generacion_nombre_esquema
+  - name: generate_schema_name
     description: "Sobreescribe el comportamiento por defecto de dbt para evitar esquemas sucios. Fuerza a dbt a usar el nombre exacto facilitado."
     arguments:
       - name: custom_schema_name

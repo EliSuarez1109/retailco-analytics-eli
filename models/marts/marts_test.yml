@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: mart_sales_by_channel
+    description: "Modelo analítico que agrega las ventas brutas, netas y devoluciones a nivel mensual, por canal y categoría. Sirve para analizar la rentabilidad de cada punto de venta."
+    columns:
+      - name: sales_month
+        description: "Mes en el que se realizó la venta."
+        tests:
+          - not_null
+      - name: sales_channel
+        description: "El canal de la transacción (Store, Catalog, Web)."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Store', 'Catalog', 'Web']
+      - name: return_rate_pct
+        description: "Porcentaje del dinero devuelto respecto a los ingresos brutos."
+        tests:
+          # NOTA: Comentado por bug de compatibilidad entre dbt_expectations y dbt 2.0-preview
+          # - dbt_expectations.expect_column_values_to_be_between:
+          #     arguments:
+          #       min_value: 0
+          #       max_value: 100
+      - name: gross_revenue
+        description: "Suma total de ventas antes de descuentos y devoluciones."
+        tests:
+          # NOTA: Comentado por bug de compatibilidad entre dbt_expectations y dbt 2.0-preview
+          # - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_or_equal_to_B:
+          #     arguments:
+          #       column_A: gross_revenue
+          #       column_B: net_revenue
+
+  - name: mart_customer_lifetime_value
+    description: "Calcula el valor del tiempo de vida del cliente (CLV) y clasifica a los usuarios en segmentos de valor (High, Medium, Low) según la distribución real en percentiles."
+    columns:
+      - name: customer_id
+        description: "Identificador único de cada cliente."
+        tests:
+          - not_null
+          - unique
+      - name: value_segment
+        description: "Segmentación calculada (High, Medium, Low) basada en el total gastado."
+        tests:
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              arguments:
+                min_value: 3
+                max_value: 6
+
+  - name: mart_inventory_health
+    description: "Modelo de salud de inventario semanal. Cruza las ventas con el stock disponible para calcular semanas de cobertura y detectar roturas de stock."
+    columns:
+      - name: item_id
+        description: "SKU o identificador del producto en el inventario."
+        tests:
+          - not_null
+      - name: inventory_trend
+        description: "Tendencia del inventario respecto a la semana anterior (Creciente, Decreciente, Estable) usando una macro personalizada."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Creciente', 'Decreciente', 'Estable', 'Sin historial']
