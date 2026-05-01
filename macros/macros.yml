@@ -1,0 +1,25 @@
+version: 2
+
+macros:
+  - name: generacion_nombre_esquema
+    description: "Sobreescribe el comportamiento por defecto de dbt para evitar esquemas sucios. Fuerza a dbt a usar el nombre exacto facilitado."
+    arguments:
+      - name: custom_schema_name
+        type: string
+        description: "El nombre del esquema configurado en dbt_project.yml"
+      - name: node
+        type: dict
+        description: "El objeto/nodo que dbt está procesando"
+
+  - name: clasificacion_tendencia
+    description: "Evalúa dos valores (actual y previo) y devuelve 'Creciente', 'Decreciente' o 'Estable' basado en un umbral porcentual configurable. Centraliza la lógica de negocio."
+    arguments:
+      - name: current_val
+        type: string
+        description: "Nombre de la columna con el valor del periodo actual."
+      - name: previous_val
+        type: string
+        description: "Nombre de la columna o función de ventana (LAG) con el valor anterior."
+      - name: threshold_pct
+        type: float
+        description: "El límite de tolerancia. Por defecto es 0.05 (5%)."

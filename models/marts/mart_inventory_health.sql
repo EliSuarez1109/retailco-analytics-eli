@@ -57,10 +57,7 @@ SELECT
     
     LAG(avg_weekly_stock) OVER (PARTITION BY item_id ORDER BY year, week_sequence) AS prev_week_stock,
     
-    CASE 
-        WHEN avg_weekly_stock > LAG(avg_weekly_stock) OVER (PARTITION BY item_id ORDER BY year, week_sequence) * 1.05 THEN 'Creciente'
-        WHEN avg_weekly_stock < LAG(avg_weekly_stock) OVER (PARTITION BY item_id ORDER BY year, week_sequence) * 0.95 THEN 'Decreciente'
-        ELSE 'Estable'
-    END AS inventory_trend
+   -- Usamos nuestra macro personalizada para estandarizar la regla de negocio
+    {{ clasificacion_tendencia('avg_weekly_stock', 'LAG(avg_weekly_stock) OVER (PARTITION BY item_id ORDER BY year, week_sequence)', 0.05) }} AS inventory_trend
 
 FROM inventory_metrics
